@@ -22,4 +22,9 @@ public class LoginUserServiceImpl implements LoginUserService {
 		return loginUserMapper.selectData(vo );
 	}
 
+	@Override
+	public int insertData(HashMap<Object, Object> vo) {
+		return loginUserMapper.insertData(vo);
+	}
+
 }

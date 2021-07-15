@@ -12,6 +12,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,6 +45,9 @@ public class LoginController {
     @Autowired
     private LoginUserService loginUserService;
     
+    @Autowired
+	PasswordEncoder passwordEncoder;
+    
     @GetMapping("/hello")
     public String hello() {
     	return "Hello";
@@ -74,8 +78,24 @@ public class LoginController {
     }
     
 	@PostMapping("/api/auth/register")
-	public void register(@RequestBody String data) {
+	public ResponseEntity<?> register(@RequestBody String data) {
+		HashMap<Object, Object> resultMap = new HashMap<Object, Object>();
+		JSONObject obj = new JSONObject(data);
 		
+		HashMap<Object, Object> paramMap = new HashMap<>();
+		paramMap.put("username", obj.get("id"));
+		paramMap.put("nickname", obj.get("nickname"));
+		paramMap.put("password", passwordEncoder.encode(obj.get("password").toString()));
+		
+		int resultCnt = loginUserService.insertData(paramMap);
+		UserDetails userDetails= null;
+		String token = null;
+		if(resultCnt == 1) {
+			userDetails = userDetailsService.loadUserByUsername(obj.getString("id"));
+			token = jwtTokenUtil.generateToken(userDetails);
+		}
+
+		return ResponseEntity.ok(new JwtResponse(token));
 	}
 	@PostMapping("/api/auth/idDupleCheck")
 	public HashMap<Object, Object> idDupleCheck(@RequestBody String data) {

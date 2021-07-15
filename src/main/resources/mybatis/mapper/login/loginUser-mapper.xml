@@ -11,5 +11,8 @@
 		  from users
 		  where username=#{username}
 	</select>
-
+	
+	<insert id="insertData" parameterType="hashMap">
+		insert into users(username, nickname, password, enabled) values(#{username},#{nickname}, #{password}, 1)
+	</insert>
 </mapper>  

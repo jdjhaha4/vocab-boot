@@ -41,8 +41,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // user for matching credentials
         // Use BCryptPasswordEncoder
     	
-//        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
-        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(NoOpPasswordEncoder.getInstance());
+        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
+//        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(NoOpPasswordEncoder.getInstance());
 }
 
     @Bean
