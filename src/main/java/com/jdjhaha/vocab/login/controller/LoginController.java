@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +14,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -71,12 +73,24 @@ public class LoginController {
     public void logout(Principal principal) throws Exception {
     }
     
-	/*
-	@RequestMapping(value = "/api/auth/login", method = RequestMethod.POST)
-	public void createAuthenticationToken(@RequestBody String data) throws Exception {
-		log.info(data);
+	@PostMapping("/api/auth/register")
+	public void register(@RequestBody String data) {
+		
 	}
-	*/
+	@PostMapping("/api/auth/idDupleCheck")
+	public HashMap<Object, Object> idDupleCheck(@RequestBody String data) {
+		HashMap<Object, Object> resultMap = new HashMap<Object, Object>();
+		JSONObject obj = new JSONObject(data);
+		HashMap<Object, Object> user = loginUserService.selectData(obj.getString("id"));
+		resultMap.put("id", obj.getString("id"));
+		if(user != null) {
+			resultMap.put("available", false);
+		}else {
+			resultMap.put("available", true);
+		}
+		
+		return resultMap;
+	}
 
     private void authenticate(String username, String password) throws Exception {
         try {
