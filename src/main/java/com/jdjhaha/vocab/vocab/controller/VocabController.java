@@ -7,7 +7,7 @@ import java.util.List;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,12 +29,13 @@ public class VocabController {
 		return resultList;
 	}
 	
-	@PutMapping("/vocab/insert")
+	@PostMapping("/vocab/insert")
 	public int saveVocaData(@RequestBody String data, Principal principal){
+		log.info(data);
 		JSONObject obj = new JSONObject(data);
 		
 		HashMap<Object, Object> paramMap = new HashMap<>();
-		paramMap.put("voca_json", obj.getString("vocaJson"));
+		paramMap.put("voca_json", obj.toString());
 		paramMap.put("username", principal.getName());
 		int resultCnt = vocabService.insertData(paramMap);
 		
