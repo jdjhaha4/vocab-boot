@@ -16,8 +16,8 @@ public class VocabServiceImpl implements VocabService {
 	private VocabMapper vocabMapper;
 	
 	@Override
-	public List<HashMap<Object, Object>> selectData() {
-		return vocabMapper.selectData(null);
+	public List<HashMap<Object, Object>> selectData(HashMap<Object, Object> paramMap) {
+		return vocabMapper.selectData(paramMap);
 	}
 
 	@Override

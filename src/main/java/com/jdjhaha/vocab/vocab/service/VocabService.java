@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface VocabService {
-	List<HashMap<Object, Object>> selectData();
+	List<HashMap<Object, Object>> selectData(HashMap<Object, Object> paramMap);
 
 	int insertData(HashMap<Object, Object> paramMap);
 }
