@@ -11,6 +11,7 @@
 		from vocab
 		where 
 		        username=#{username}
+		order by id desc
 	</select>
 	
 	<insert id="insertData" parameterType="hashMap">
