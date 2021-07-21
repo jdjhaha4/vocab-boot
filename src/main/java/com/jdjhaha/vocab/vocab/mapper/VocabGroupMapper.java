@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @Mapper
-public interface VocabMapper {
+public interface VocabGroupMapper {
 	List<HashMap<Object, Object>> selectData(HashMap<Object, Object> paramMap);
 
 	int insertData(HashMap<Object, Object> paramMap);

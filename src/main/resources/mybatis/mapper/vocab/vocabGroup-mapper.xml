@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.jdjhaha.vocab.vocab.mapper.VocabMapper">
+<mapper namespace="com.jdjhaha.vocab.vocab.mapper.VocabGroupMapper">
 
 	<select id="selectData" parameterType="hashMap"
 		resultType="hashMap">
 		select 
-				id,
-				voca_json,
+				group_code,
+				group_name,
 				username
-		from vocab
+		from voca_group
 		where 
 		        username=#{username}
-		order by id desc
+		order by group_code desc
 	</select>
 	
 	<insert id="insertData" parameterType="hashMap">
-		insert into vocab(voca_json, username, add_date) values(#{voca_json},#{username}, DATE_FORMAT(NOW(),'%Y%m%d'))
+		insert into voca_group(group_name, username) values(#{group_name},#{username})
 	</insert>
 	
 	<delete id="deleteData" parameterType="hashMap">
     	delete
-    	  from vocab
-    	  where  id=#{id}
+    	  from voca_group
+    	  where  group_code=#{group_code}
     	      and username=#{username}
     </delete>
 </mapper>  

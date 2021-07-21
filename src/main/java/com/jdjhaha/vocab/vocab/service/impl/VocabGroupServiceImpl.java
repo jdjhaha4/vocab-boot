@@ -6,28 +6,28 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jdjhaha.vocab.vocab.mapper.VocabMapper;
-import com.jdjhaha.vocab.vocab.service.VocabService;
+import com.jdjhaha.vocab.vocab.mapper.VocabGroupMapper;
+import com.jdjhaha.vocab.vocab.service.VocabGroupService;
 
 @Service
-public class VocabServiceImpl implements VocabService {
+public class VocabGroupServiceImpl implements VocabGroupService {
 	
 	@Autowired
-	private VocabMapper vocabMapper;
+	private VocabGroupMapper vocabGroupMapper;
 	
 	@Override
 	public List<HashMap<Object, Object>> selectData(HashMap<Object, Object> paramMap) {
-		return vocabMapper.selectData(paramMap);
+		return vocabGroupMapper.selectData(paramMap);
 	}
 
 	@Override
 	public int insertData(HashMap<Object, Object> paramMap) {
-		return vocabMapper.insertData(paramMap);
+		return vocabGroupMapper.insertData(paramMap);
 	}
 
 	@Override
 	public int deleteData(HashMap<Object, Object> paramMap) {
-		return vocabMapper.deleteData(paramMap);
+		return vocabGroupMapper.deleteData(paramMap);
 	}
 
 }
