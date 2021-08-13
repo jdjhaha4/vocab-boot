@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdjhaha.vocab.vocab.mapper.VocabGroupMappingMapper">
+
+	<select id="selectData" parameterType="hashMap"
+		resultType="hashMap">
+		select 
+				vgm.group_code,
+				vg.group_name,
+				vgm.vocab_id,
+				v.voca_json,
+				vgm.username
+		from vocab_group_mapping vgm,  voca_group vg, vocab v
+		where
+		        vgm.group_code = vg.group_code
+		        and vgm.vocab_id = v.id
+				and vgm.group_code=#{group_code} 
+		        and vgm.username=#{username}
+		order by vgm.group_code desc
+	</select>
+	
+	<insert id="insertData" parameterType="hashMap">
+		insert into vocab_group_mapping(group_code, vocab_id, username) values(#{group_code},#{vocab_id},#{username})
+	</insert>
+	
+	<delete id="deleteData" parameterType="hashMap">
+    	delete
+    	  from vocab_group_mapping
+    	  where  group_code=#{group_code}
+    	      and vocab_id=#{vocab_id}
+    	      and username=#{username}
+    </delete>
+</mapper>  
