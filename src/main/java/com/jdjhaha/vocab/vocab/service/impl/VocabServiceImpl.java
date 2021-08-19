@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.jdjhaha.vocab.vocab.mapper.VocabMapper;
 import com.jdjhaha.vocab.vocab.service.VocabService;
+import com.jdjhaha.vocab.vocab.vo.VocabVO;
 
 @Service
 public class VocabServiceImpl implements VocabService {
@@ -18,6 +19,11 @@ public class VocabServiceImpl implements VocabService {
 	@Override
 	public List<HashMap<Object, Object>> selectData(HashMap<Object, Object> paramMap) {
 		return vocabMapper.selectData(paramMap);
+	}
+
+	@Override
+	public int insertData(VocabVO vocab) {
+		return vocabMapper.insertData2(vocab);
 	}
 
 	@Override

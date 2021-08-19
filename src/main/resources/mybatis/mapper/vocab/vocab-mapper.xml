@@ -4,6 +4,27 @@
 
 	<select id="selectData" parameterType="hashMap"
 		resultType="hashMap">
+		<if test='groupCode!=null and !groupCode.equals("all")'>
+			select 
+					v.id,
+					v.voca_json,
+					v.username
+			from vocab v left outer join vocab_group_mapping vgm on v.id = vgm.vocab_id
+			where 
+				<if test='groupCode.equals("none")'>
+					vgm.vocab_id is null
+				</if>
+				<if test='!groupCode.equals("none")'>
+			        vgm.group_code=#{groupCode}
+				</if>
+			        and v.username=#{username}
+			     <if test='ignoreVocabIdList != null'>
+			          and id not in 
+			          <foreach collection="ignoreVocabIdList" item="ignoreVocabId" open="(" close=")" separator=",">#{ignoreVocabId}</foreach>
+		        </if>
+			order by v.id desc
+		</if>
+		<if test='groupCode == null or (groupCode !=null and groupCode.equals("all"))'>
 		select 
 				id,
 				voca_json,
@@ -11,10 +32,19 @@
 		from vocab
 		where 
 		        username=#{username}
+		        <if test='ignoreVocabIdList != null'>
+		          and id not in 
+		          <foreach collection="ignoreVocabIdList" item="ignoreVocabId" open="(" close=")" separator=",">#{ignoreVocabId}</foreach>
+		        </if>
 		order by id desc
+		</if>
 	</select>
 	
-	<insert id="insertData" parameterType="hashMap">
+	<insert id="insertData" parameterType="hashMap" >
+		insert into vocab(voca_json, username, add_date) values(#{voca_json},#{username}, DATE_FORMAT(NOW(),'%Y%m%d'))
+	</insert>
+	
+	<insert id="insertData2" parameterType="com.jdjhaha.vocab.vocab.vo.VocabVO" useGeneratedKeys="true" keyProperty="id">
 		insert into vocab(voca_json, username, add_date) values(#{voca_json},#{username}, DATE_FORMAT(NOW(),'%Y%m%d'))
 	</insert>
 	
