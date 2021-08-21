@@ -5,13 +5,13 @@
 	<select id="selectData" parameterType="hashMap"
 		resultType="hashMap">
 		select
-			vgm.group_code,
+			vg.group_code,
 			vg.group_name,
-			vgm.vocab_count,
+			ifnull(vgm.vocab_count,0) as vocab_count,
 			vg.username
 		from
-			voca_group vg,
-			(
+			voca_group vg
+		left outer join (
 			select
 				group_code,
 				count(group_code) as vocab_count,
@@ -20,10 +20,10 @@
 				vocab_group_mapping
 			group by
 				group_code,
-				username) vgm
-		where
+				username) vgm on
 			vgm.group_code = vg.group_code
-			and vg.username = #{username}
+		where
+			vg.username = #{username}
 		order by
 			vg.group_code desc
 	</select>
