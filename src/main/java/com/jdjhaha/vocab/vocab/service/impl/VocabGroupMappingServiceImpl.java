@@ -30,4 +30,9 @@ public class VocabGroupMappingServiceImpl implements VocabGroupMappingService {
 		return vocabGroupMappingMapper.deleteData(paramMap);
 	}
 
+	@Override
+	public int deleteDataByGroupCode(HashMap<Object, Object> paramMap) {
+		return vocabGroupMappingMapper.deleteDataByGroupCode(paramMap);
+	}
+
 }

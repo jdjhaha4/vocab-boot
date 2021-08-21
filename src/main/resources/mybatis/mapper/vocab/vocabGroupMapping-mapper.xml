@@ -30,4 +30,10 @@
     	      and vocab_id=#{vocab_id}
     	      and username=#{username}
     </delete>
+    <delete id="deleteDataByGroupCode" parameterType="hashMap">
+    	delete
+    	  from vocab_group_mapping
+    	  where  group_code=#{group_code}
+    	      and username=#{username}
+    </delete>
 </mapper>  

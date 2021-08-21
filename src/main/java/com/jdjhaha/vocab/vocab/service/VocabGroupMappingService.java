@@ -8,4 +8,5 @@ public interface VocabGroupMappingService {
 
 	int insertData(HashMap<Object, Object> paramMap);
 	int deleteData(HashMap<Object, Object> paramMap);
+	int deleteDataByGroupCode(HashMap<Object, Object> paramMap);
 }
