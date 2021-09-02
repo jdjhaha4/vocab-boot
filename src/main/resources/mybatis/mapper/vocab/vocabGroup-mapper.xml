@@ -24,6 +24,9 @@
 			vgm.group_code = vg.group_code
 		where
 			vg.username = #{username}
+			<if test='groupCode != null'>
+				and vg.group_code = #{groupCode}
+			</if>
 		order by
 			vg.group_code desc
 	</select>

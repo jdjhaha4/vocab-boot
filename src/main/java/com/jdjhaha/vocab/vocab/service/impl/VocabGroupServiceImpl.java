@@ -25,6 +25,16 @@ public class VocabGroupServiceImpl implements VocabGroupService {
 	}
 
 	@Override
+	public HashMap<Object, Object> selectOneData(HashMap<Object, Object> paramMap) {
+		List<HashMap<Object, Object>> resultList = vocabGroupMapper.selectData(paramMap);
+		if(resultList != null && resultList.size()==1) {
+			return resultList.get(0);
+		}else {
+			return null;
+		}
+	}
+
+	@Override
 	public int insertData(HashMap<Object, Object> paramMap) {
 		return vocabGroupMapper.insertData(paramMap);
 	}

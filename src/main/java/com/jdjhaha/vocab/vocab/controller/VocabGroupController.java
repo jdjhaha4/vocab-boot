@@ -8,6 +8,7 @@ import java.util.List;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,6 +30,16 @@ public class VocabGroupController {
 		HashMap<Object, Object> paramMap = new HashMap<Object, Object>();
 		paramMap.put("username", principal.getName());
 		List<HashMap<Object, Object>> resultList =vocabGroupService.selectData(paramMap);
+		
+		return resultList;
+	}
+	
+	@GetMapping("/vocab/group/{groupCode}")
+	public HashMap<Object, Object> getVocabGroup( Principal principal, @PathVariable String groupCode) {
+		HashMap<Object, Object> paramMap = new HashMap<Object, Object>();
+		paramMap.put("username", principal.getName());
+		paramMap.put("groupCode", groupCode);
+		HashMap<Object, Object> resultList =vocabGroupService.selectOneData(paramMap);
 		
 		return resultList;
 	}
