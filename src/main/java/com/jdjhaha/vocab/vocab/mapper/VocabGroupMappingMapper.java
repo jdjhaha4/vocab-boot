@@ -14,4 +14,5 @@ public interface VocabGroupMappingMapper {
 	int insertData(HashMap<Object, Object> paramMap);
 	int deleteData(HashMap<Object, Object> map);
 	int deleteDataByGroupCode(HashMap<Object, Object> map);
+	int deleteDataByVocabId(HashMap<Object, Object> map);
 }
