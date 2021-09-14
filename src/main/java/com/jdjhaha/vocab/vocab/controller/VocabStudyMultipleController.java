@@ -1,19 +1,17 @@
 package com.jdjhaha.vocab.vocab.controller;
 
-import java.math.BigInteger;
 import java.security.Principal;
 import java.util.HashMap;
-import java.util.List;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jdjhaha.vocab.vocab.service.VocabGroupMappingService;
+import com.jdjhaha.vocab.vocab.service.VocabQuestionResultHistoryService;
+import com.jdjhaha.vocab.vocab.service.VocabQuestionResultService;
+import com.jdjhaha.vocab.vocab.vo.VocabQuestionResultVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,8 +19,11 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class VocabStudyMultipleController {
 	
-//	@Autowired
-//	private VocabGroupMappingService vocabGroupMappingService;
+	@Autowired
+	private VocabQuestionResultService vocabQuestionResultService;
+	
+	@Autowired
+	private VocabQuestionResultHistoryService vocabQuestionResultHistoryService;
 	
 //	@GetMapping("/vocab/group/mapping/list")
 //	public List<HashMap<Object, Object>> getVocabList(@RequestParam(required=false) String groupCode, Principal principal) {
@@ -34,6 +35,26 @@ public class VocabStudyMultipleController {
 //		return resultList;
 //	}
 	///vocab/study/multiple/post', { vocab_id, result_flag });
+	@PostMapping("/vocab/question/result/insert")
+	public VocabQuestionResultVO saveVocabQuestionResultInsert(@RequestBody String data, Principal principal){
+		log.info(data);
+		JSONObject obj = new JSONObject(data);
+		
+		VocabQuestionResultVO vqrVO = VocabQuestionResultVO.builder()
+															.group_code(obj.getInt("group_code"))
+															.group_name(obj.getString("group_name"))
+															.vocab_count(obj.getInt("vocab_count"))
+															.answer_count(obj.getInt("answer_count"))
+															.wrong_answer_count(obj.getInt("wrong_answer_count"))
+															.complete_flag(obj.getString("complete_flag"))
+															.username(principal.getName())
+															.study_time_seconds(obj.getInt("study_time_seconds"))
+															.build();
+		vocabQuestionResultService.insertData(vqrVO);
+		
+		return vqrVO;
+	}
+	
 	@PostMapping("/vocab/study/multiple/post")
 	public int saveVocaData(@RequestBody String data, Principal principal){
 		log.info(data);
