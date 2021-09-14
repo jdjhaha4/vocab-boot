@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdjhaha.vocab.vocab.mapper.VocabQuestionResultMapper">
+
+	<select id="selectData" parameterType="hashMap"
+		resultType="hashMap">
+		SELECT 
+			id, 
+			group_code, 
+			group_name, 
+			vocab_count, 
+			answer_count,
+			wrong_answer_count, 
+			complete_flag, 
+			regist_datetime, 
+			update_datetime,
+			username
+		FROM 
+			vocab_question_result
+		WHERE
+			username = #{username}
+			<if test='groupCode !=null and !groupCode.equals("")'>
+				and group_code = #{groupCode}
+			</if>
+			<if test='id !=null and !id.equals("")'>
+				and id = #{id}
+			</if>
+	</select>
+	
+	<insert id="insertData" parameterType="hashMap">
+	INSERT INTO vocab_question_result
+		(
+			group_code, 
+			group_name, 
+			vocab_count, 
+			answer_count, 
+			wrong_answer_count,
+			complete_flag, 
+			regist_datetime, 
+			update_datetime, 
+			username
+		)
+	VALUES(
+			#{groupCode}, 
+			#{groupName}, 
+			#{vocabCount}, 
+			0, 
+			0, 
+			'F', 
+			now(), 
+			now(), 
+			#{username}
+		)
+	</insert>
+	
+	<delete id="deleteData" parameterType="hashMap">
+	DELETE FROM voca_study.vocab_question_result
+	WHERE 
+		username = #{username}
+		<if test='groupCode !=null and !groupCode.equals("")'>
+			and group_code = #{groupCode}
+		</if>
+		<if test='id !=null and !id.equals("")'>
+			and id = #{id}
+		</if>
+    </delete>
+</mapper>  
