@@ -86,6 +86,19 @@
 	)
 	</insert>
 	
+	<update id="updateData" parameterType="hashMap">
+		UPDATE vocab_question_result
+		SET 
+			answer_count=#{answer_count},
+			wrong_answer_count=#{wrong_answer_count},
+			complete_flag=#{complete_flag},
+			update_datetime=now(),
+			study_time_seconds=#{study_time_seconds}
+		WHERE id=#{id}
+		    and username =#{username}
+				
+	</update>
+	
 	<delete id="deleteData" parameterType="hashMap">
 	DELETE FROM voca_study.vocab_question_result
 	WHERE 

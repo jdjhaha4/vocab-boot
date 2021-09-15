@@ -6,34 +6,28 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jdjhaha.vocab.vocab.mapper.VocabQuestionResultMapper;
-import com.jdjhaha.vocab.vocab.service.VocabQuestionResultService;
-import com.jdjhaha.vocab.vocab.vo.VocabQuestionResultVO;
+import com.jdjhaha.vocab.vocab.mapper.VocabQuestionResultHistoryMapper;
+import com.jdjhaha.vocab.vocab.service.VocabQuestionResultHistoryService;
 
 @Service
-public class VocabQuestionResultHistoryServiceImpl implements VocabQuestionResultService {
+public class VocabQuestionResultHistoryServiceImpl implements VocabQuestionResultHistoryService {
 	
 	@Autowired
-	private VocabQuestionResultMapper vocabQuestionResultMapper;
+	private VocabQuestionResultHistoryMapper vocabQuestionResultHistoryMapper;
 	
 	@Override
 	public List<HashMap<Object, Object>> selectData(HashMap<Object, Object> paramMap) {
-		return vocabQuestionResultMapper.selectData(paramMap);
+		return vocabQuestionResultHistoryMapper.selectData(paramMap);
 	}
 
 	@Override
 	public int insertData(HashMap<Object, Object> paramMap) {
-		return vocabQuestionResultMapper.insertData(paramMap);
+		return vocabQuestionResultHistoryMapper.insertData(paramMap);
 	}
 	
 	@Override
-	public int insertData(VocabQuestionResultVO vocabQuestionResultVO) {
-		return vocabQuestionResultMapper.insertData2(vocabQuestionResultVO);
-	}
-
-	@Override
 	public int deleteData(HashMap<Object, Object> paramMap) {
-		return vocabQuestionResultMapper.deleteData(paramMap);
+		return vocabQuestionResultHistoryMapper.deleteData(paramMap);
 	}
 
 }

@@ -15,5 +15,6 @@ public interface VocabQuestionResultMapper {
 	
 	int insertData2(VocabQuestionResultVO vocabQuestionResultVO);
 	int insertData(HashMap<Object, Object> paramMap);
+	int updateData(HashMap<Object, Object> paramMap);
 	int deleteData(HashMap<Object, Object> map);
 }
