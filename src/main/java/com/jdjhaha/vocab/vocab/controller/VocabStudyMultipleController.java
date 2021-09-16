@@ -62,18 +62,17 @@ public class VocabStudyMultipleController {
 		log.info(data);
 		JSONObject obj = new JSONObject(data);
 		
-		VocabQuestionResultVO vqrVO = VocabQuestionResultVO.builder()
-															.group_code(obj.getInt("group_code"))
-															.group_name(obj.getString("group_name"))
-															.vocab_count(obj.getInt("vocab_count"))
-															.answer_count(obj.getInt("answer_count"))
-															.wrong_answer_count(obj.getInt("wrong_answer_count"))
-															.complete_flag(obj.getString("complete_flag"))
-															.username(principal.getName())
-															.study_time_seconds(obj.getInt("study_time_seconds"))
-															.build();
-		vocabQuestionResultService.insertData(vqrVO);
-		resultMap.put("vocab_question_result_id", vqrVO.getId());
+		HashMap<Object, Object> paramMap = new HashMap<>();
+		paramMap.put("id", obj.getBigInteger("id"));
+		paramMap.put("answer_count", obj.getInt("answer_count"));
+		paramMap.put("wrong_answer_count", obj.getInt("wrong_answer_count"));
+		paramMap.put("complete_flag", obj.getString("complete_flag"));
+		paramMap.put("study_time_seconds", obj.getInt("study_time_seconds"));
+		paramMap.put("username", principal.getName());
+		
+		vocabQuestionResultService.updateData(paramMap);
+		
+		resultMap.put("result_code", "success");
 		return resultMap;
 	}
 	
