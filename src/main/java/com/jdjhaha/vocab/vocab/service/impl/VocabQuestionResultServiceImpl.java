@@ -42,4 +42,9 @@ public class VocabQuestionResultServiceImpl implements VocabQuestionResultServic
 		return vocabQuestionResultMapper.deleteData(paramMap);
 	}
 
+	@Override
+	public List<HashMap<Object, Object>> selectGroupByData(HashMap<Object, Object> paramMap) {
+		return vocabQuestionResultMapper.selectGroupByData(paramMap);
+	}
+
 }

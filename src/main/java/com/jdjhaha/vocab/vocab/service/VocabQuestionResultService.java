@@ -12,4 +12,6 @@ public interface VocabQuestionResultService {
 	int insertData(VocabQuestionResultVO vocabQuestionResultVO);
 	int updateData(HashMap<Object, Object> paramMap);
 	int deleteData(HashMap<Object, Object> paramMap);
+
+	List<HashMap<Object, Object>> selectGroupByData(HashMap<Object, Object> paramMap);
 }

@@ -17,4 +17,6 @@ public interface VocabQuestionResultMapper {
 	int insertData(HashMap<Object, Object> paramMap);
 	int updateData(HashMap<Object, Object> paramMap);
 	int deleteData(HashMap<Object, Object> map);
+
+	List<HashMap<Object, Object>> selectGroupByData(HashMap<Object, Object> paramMap);
 }
