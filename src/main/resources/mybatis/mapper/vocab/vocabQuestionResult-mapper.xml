@@ -32,18 +32,28 @@
 	<select id="selectGroupByData" parameterType="hashMap"
 		resultType="hashMap">
 		select
-			group_code,
-			group_name,
-			vocab_count,
-			count(group_code) as study_count,
-			DATE_FORMAT(max(update_datetime), '%Y-%m-%d %H:%i:%s') as update_datetime
+			vqr.group_code,
+			vqr.group_name,
+			vqr.vocab_count,
+			max_vqr.study_count,
+			DATE_FORMAT(vqr.update_datetime, '%Y-%m-%d %H:%i:%s') as update_datetime
 		from
-			vocab_question_result
+			vocab_question_result vqr,
+			(
+			select
+				max(id) as id,
+				count(group_code) as study_count
+			from
+				vocab_question_result
+			where
+				username = #{username}
+			group by
+				group_code
+			order by
+				max(id) desc ) max_vqr
 		where
-			username = #{username}
-		group by
-			group_code
-		order by max(update_datetime) desc
+			vqr.id = max_vqr.id
+		order by vqr.id desc
 	</select>
 	
 	<insert id="insertData" parameterType="hashMap">
