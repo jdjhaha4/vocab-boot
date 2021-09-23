@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.215.54:3000"})
+@CrossOrigin(origins = {"http://localhost:3000", "http://192.168.215.54:3000","https://quiet-rattlesnake-14.loca.lt"})
 public class LoginController {
 	@Autowired
     private AuthenticationManager authenticationManager;
