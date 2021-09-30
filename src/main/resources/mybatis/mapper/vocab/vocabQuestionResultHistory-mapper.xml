@@ -17,11 +17,14 @@
 			answer_vocab, 
 			answer_mean, 
 			result_flag, 
-			regist_datetime, 
+			DATE_FORMAT(regist_datetime, '%Y-%m-%d %H:%i:%s') as regist_datetime,
 			username
 		FROM vocab_question_result_history
 		WHERE
 			username = #{username}
+			<if test='vocab_question_result_id !=null and !vocab_question_result_id.equals("")'>
+				and vocab_question_result_id = #{vocab_question_result_id}
+			</if>
 			<if test='group_code !=null and !group_code.equals("")'>
 				and group_code = #{group_code}
 			</if>
