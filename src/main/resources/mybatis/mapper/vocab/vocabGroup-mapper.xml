@@ -8,7 +8,9 @@
 			vg.group_code,
 			vg.group_name,
 			ifnull(vgm.vocab_count,0) as vocab_count,
-			vg.username
+			vg.username,
+			vqr.study_count,
+			DATE_FORMAT(vqr.update_datetime, '%Y-%m-%d %H:%i:%s') as update_datetime
 		from
 			voca_group vg
 		left outer join (
@@ -22,6 +24,24 @@
 				group_code,
 				username) vgm on
 			vgm.group_code = vg.group_code
+			left outer join (
+				select
+					max(id) as id,
+					count(group_code) as study_count,
+					group_code,
+					update_datetime
+				from
+					vocab_question_result
+				where
+					username = 'jdjhaha'
+					<if test='groupCode != null'>
+						and group_code = #{groupCode}
+					</if>
+				group by
+					group_code
+				order by
+					max(id) desc ) vqr on
+			vg.group_code = vqr.group_code
 		where
 			vg.username = #{username}
 			<if test='groupCode != null'>

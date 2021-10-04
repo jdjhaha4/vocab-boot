@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jdjhaha.vocab.vocab.service.VocabDictionaryService;
 import com.jdjhaha.vocab.vocab.service.VocabGroupMappingService;
 import com.jdjhaha.vocab.vocab.service.VocabService;
 import com.jdjhaha.vocab.vocab.vo.VocabVO;
@@ -26,11 +27,13 @@ public class VocabController {
 	private VocabService vocabService;
 	
 	@Autowired
+	private VocabDictionaryService vocabDictionaryService;
+	
+	@Autowired
 	private VocabGroupMappingService vocabGroupMappingService;
 	
 	@PostMapping("/vocab/list")
 	public List<HashMap<Object, Object>> getVocabList(@RequestBody String data, Principal principal) {
-		log.info(data);
 		JSONObject obj = new JSONObject(data);
 		HashMap<Object, Object> paramMap = new HashMap<Object, Object>();
 		paramMap.put("username", principal.getName());
@@ -49,10 +52,13 @@ public class VocabController {
 	
 	@PostMapping("/vocab/insert")
 	public int saveVocaData(@RequestBody String data, Principal principal){
-		log.info(data);
 		JSONObject obj = new JSONObject(data);
 		String selectedGroupCode = obj.getString("selectedGroupCode");
 		obj.remove("selectedGroupCode");
+		
+		HashMap<String, String> dicMap = new HashMap<>();
+		dicMap.put("vocab", obj.getString("vocab"));
+		vocabDictionaryService.requestData(dicMap);
 		
 		VocabVO vocabVO = new VocabVO();
 		vocabVO.setVoca_json(obj.toString());
