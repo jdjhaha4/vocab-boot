@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jdjhaha.vocab.vocab.mapper.VocabMapper">
-
+	<!--
+	CREATE TABLE `vocab` (
+	  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+	  `voca_json` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`voca_json`)),
+	  `username` varchar(100) NOT NULL,
+	  `add_date` varchar(8) NOT NULL COMMENT '등록년월일',
+	  `vocab_dic` varchar(100) DEFAULT NULL,
+	  PRIMARY KEY (`id`)
+	) ENGINE=InnoDB AUTO_INCREMENT=216 DEFAULT CHARSET=utf8;
+	-->
+	
 	<select id="selectData" parameterType="hashMap"
 		resultType="hashMap">
 		<if test='groupCode!=null and !groupCode.equals("all")'>
 			select 
 					v.id,
 					v.voca_json,
-					v.username
+					v.username,
+					vd.vocab_dic_json
 			from vocab v left outer join vocab_group_mapping vgm on v.id = vgm.vocab_id
+					left outer join vocab_dic vd on v.vocab_dic = vd.vocab
 			where 
 				<if test='groupCode.equals("none")'>
 					vgm.vocab_id is null
@@ -26,26 +38,27 @@
 		</if>
 		<if test='groupCode == null or (groupCode !=null and groupCode.equals("all"))'>
 		select 
-				id,
-				voca_json,
-				username
-		from vocab
+				v.id,
+				v.voca_json,
+				v.username,
+				vd.vocab_dic_json
+		from vocab v left outer join vocab_dic vd on v.vocab_dic = vd.vocab
 		where 
-		        username=#{username}
+		        v.username=#{username}
 		        <if test='ignoreVocabIdList != null'>
-		          and id not in 
+		          and v.id not in 
 		          <foreach collection="ignoreVocabIdList" item="ignoreVocabId" open="(" close=")" separator=",">#{ignoreVocabId}</foreach>
 		        </if>
-		order by id desc
+		order by v.id desc
 		</if>
 	</select>
 	
 	<insert id="insertData" parameterType="hashMap" >
-		insert into vocab(voca_json, username, add_date) values(#{voca_json},#{username}, DATE_FORMAT(NOW(),'%Y%m%d'))
+		insert into vocab(voca_json, username, add_date, vocab_dic) values(#{voca_json},#{username}, DATE_FORMAT(NOW(),'%Y%m%d',#{vocab_dic}))
 	</insert>
 	
 	<insert id="insertData2" parameterType="com.jdjhaha.vocab.vocab.vo.VocabVO" useGeneratedKeys="true" keyProperty="id">
-		insert into vocab(voca_json, username, add_date) values(#{voca_json},#{username}, DATE_FORMAT(NOW(),'%Y%m%d'))
+		insert into vocab(voca_json, username, add_date, vocab_dic) values(#{voca_json},#{username}, DATE_FORMAT(NOW(),'%Y%m%d'),#{vocab_dic})
 	</insert>
 	
 	<delete id="deleteData" parameterType="hashMap">

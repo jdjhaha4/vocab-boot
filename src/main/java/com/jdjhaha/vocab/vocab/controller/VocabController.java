@@ -56,13 +56,22 @@ public class VocabController {
 		String selectedGroupCode = obj.getString("selectedGroupCode");
 		obj.remove("selectedGroupCode");
 		
-		HashMap<String, String> dicMap = new HashMap<>();
-		dicMap.put("vocab", obj.getString("vocab"));
-		vocabDictionaryService.requestData(dicMap);
-		
 		VocabVO vocabVO = new VocabVO();
 		vocabVO.setVoca_json(obj.toString());
 		vocabVO.setUsername(principal.getName());
+		
+		String vocab = obj.getString("vocab");
+		if(!"".equals(vocab) && !vocab.contains(" ")) {
+			HashMap<String, String> dicMap = new HashMap<>();
+			dicMap.put("vocab", obj.getString("vocab"));
+			dicMap.put("username", principal.getName());
+			HashMap<Object, Object> dicSelectData = vocabDictionaryService.selectData(dicMap);
+			if(dicSelectData == null) {
+				vocabDictionaryService.requestData(dicMap);
+			}
+			vocabVO.setVocab_dic(vocab);
+		}
+		
 		int resultCnt = vocabService.insertData(vocabVO);
 		
 		if(selectedGroupCode != null && !("all".equals(selectedGroupCode) || "none".equals(selectedGroupCode))) {

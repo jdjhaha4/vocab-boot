@@ -3,15 +3,29 @@
 <mapper namespace="com.jdjhaha.vocab.vocab.mapper.VocabDicMapper">
 	<!-- 
 	CREATE TABLE `vocab_dic` (
-	  `vocab` varchar(100) NOT NULL,
-	  `vocab_dic_json` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`vocab_dic_json`)),
-	  `regist_datetime` datetime NOT NULL DEFAULT current_timestamp(),
-	  PRIMARY KEY (`vocab`)
-	) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `vocab` varchar(100) NOT NULL,
+  `vocab_dic_json` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`vocab_dic_json`)),
+  `regist_datetime` datetime NOT NULL DEFAULT current_timestamp(),
+  `username` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`vocab`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
 	
 	 -->
+
+	<select id="selectData" parameterType="hashMap"
+		resultType="hashMap">
+		select
+			vocab,
+			vocab_dic_json,
+			regist_datetime
+		from
+			vocab_dic
+		where
+			vocab = #{vocab}
+	</select>
+	 
 	<insert id="insertData" parameterType="hashMap" >
-		insert into vocab_dic(vocab, vocab_dic_json, regist_datetime) values(#{vocab}, #{vocab_dic_json}, NOW())
+		insert into vocab_dic(vocab, vocab_dic_json, regist_datetime, username) values(#{vocab}, #{vocab_dic_json}, NOW(),#{username})
 	</insert>
 	
 </mapper>  

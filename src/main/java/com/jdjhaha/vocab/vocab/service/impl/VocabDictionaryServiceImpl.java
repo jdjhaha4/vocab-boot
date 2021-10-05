@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -33,8 +34,14 @@ public class VocabDictionaryServiceImpl implements VocabDictionaryService {
 	private VocabDicMapper vocabDicMapper;
 	
 	@Override
+	public HashMap<Object, Object> selectData(HashMap<String, String> paramMap) {
+		return vocabDicMapper.selectData(paramMap);
+	}
+
+	@Override
 	public List<HashMap<Object, Object>> requestData(HashMap<String, String> paramMap) {
 		String vocab = paramMap.get("vocab");
+		String username = paramMap.get("username");
 		log.info(vocab);
 		
 		RestTemplate restTemplate = new RestTemplate();
@@ -59,20 +66,18 @@ public class VocabDictionaryServiceImpl implements VocabDictionaryService {
         try {
 			responseEntity = restTemplate.exchange(targetUrl.toURL().toString(), HttpMethod.GET, httpEntity, String.class);
 			String result = responseEntity.getBody();
-			log.info(result);
+			
 			HashMap<Object, Object> vocabDicParam = new HashMap<Object, Object>();
 			vocabDicParam.put("vocab", vocab);
 			vocabDicParam.put("vocab_dic_json", result);
+			vocabDicParam.put("username", username);
 			vocabDicMapper.insertData(vocabDicParam);
 		} catch (RestClientException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		
 		return null;
 	}
 
