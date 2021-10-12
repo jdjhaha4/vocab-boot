@@ -2,6 +2,7 @@ package com.jdjhaha.vocab.vocab.controller;
 
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,17 @@ public class VocabStudyMultipleController {
 	@PostMapping("/vocab/question/result/insert")
 	public HashMap<Object, Object> vocabQuestionResultInsert(@RequestBody String data, Principal principal){
 		HashMap<Object, Object> resultMap = new HashMap<Object, Object>();
-		log.info(data);
+
 		JSONObject obj = new JSONObject(data);
+		
+		HashMap<Object, Object> paramMap = new HashMap<Object, Object>();
+		paramMap.put("username", principal.getName());
+		paramMap.put("groupCode", obj.getInt("group_code"));
+		List<HashMap<Object, Object>> resultList = vocabQuestionResultService.selectData(paramMap);
+		int round = 1;
+		if(resultList != null) {
+			round = resultList.size()+1;
+		}
 		
 		VocabQuestionResultVO vqrVO = VocabQuestionResultVO.builder()
 															.group_code(obj.getInt("group_code"))
@@ -50,6 +60,7 @@ public class VocabStudyMultipleController {
 															.complete_flag(obj.getString("complete_flag"))
 															.username(principal.getName())
 															.study_time_seconds(obj.getInt("study_time_seconds"))
+															.round(round)
 															.build();
 		vocabQuestionResultService.insertData(vqrVO);
 		resultMap.put("vocab_question_result_id", vqrVO.getId());

@@ -23,6 +23,13 @@ public class LoginUserServiceImpl implements LoginUserService {
 	}
 
 	@Override
+	public HashMap<Object, Object> selectDataByNickname(String nickname) {
+		HashMap<Object, Object> vo = new HashMap<Object, Object>();
+		vo.put("nickname", nickname);
+		return loginUserMapper.selectDataByNickname(vo);
+	}
+
+	@Override
 	public int insertData(HashMap<Object, Object> vo) {
 		return loginUserMapper.insertData(vo);
 	}

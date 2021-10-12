@@ -19,6 +19,7 @@ public class VocabQuestionResultVO {
 	private Date update_datetime;
 	private String username;
 	private int study_time_seconds;
+	private int round;
 	
 	public VocabQuestionResultVO() {
 		
@@ -39,7 +40,7 @@ public class VocabQuestionResultVO {
 
 	@Builder
 	public VocabQuestionResultVO(int group_code, String group_name, int vocab_count, int answer_count,
-			int wrong_answer_count, String complete_flag, String username, int study_time_seconds) {
+			int wrong_answer_count, String complete_flag, String username, int study_time_seconds, int round) {
 		super();
 		this.group_code = group_code;
 		this.group_name = group_name;
@@ -49,5 +50,6 @@ public class VocabQuestionResultVO {
 		this.complete_flag = complete_flag;
 		this.username = username;
 		this.study_time_seconds = study_time_seconds;
+		this.round = round;
 	}
 }

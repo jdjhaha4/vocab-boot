@@ -65,7 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// dont authenticate this particular request
 				.authorizeRequests()
 				.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-				.antMatchers("/api/auth/login","/hello","/","/index.html", "/static/**", "/api/auth/register","/api/auth/idDupleCheck").permitAll().
+				.antMatchers("/api/auth/login","/hello","/","/index.html", "/static/**", "/api/auth/register","/api/auth/idDupleCheck","/api/auth/nicknameDupleCheck").permitAll().
 				// all other requests need to be authenticated
 				anyRequest().authenticated().and().
 				// make sure we use stateless session; session won't be used to

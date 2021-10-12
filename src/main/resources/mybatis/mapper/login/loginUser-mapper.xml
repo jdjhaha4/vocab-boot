@@ -12,6 +12,16 @@
 		  where username=#{username}
 	</select>
 	
+	<select id="selectDataByNickname" parameterType="hashMap"
+		resultType="hashMap">
+		select username,
+		         nickname,
+		         password,
+		         enabled
+		  from users
+		  where nickname=#{nickname}
+	</select>
+	
 	<insert id="insertData" parameterType="hashMap">
 		insert into users(username, nickname, password, enabled) values(#{username},#{nickname}, #{password}, 1)
 	</insert>

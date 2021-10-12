@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -87,6 +88,13 @@ public class LoginController {
 		paramMap.put("nickname", obj.get("nickname"));
 		paramMap.put("password", passwordEncoder.encode(obj.get("password").toString()));
 		
+		HashMap<Object, Object> idDupleCheck = loginUserService.selectData(obj.getString("id"));
+		HashMap<Object, Object> nicknameDupleCheck = loginUserService.selectDataByNickname(obj.getString("nickname"));
+		if(idDupleCheck != null || nicknameDupleCheck != null) {
+			resultMap.put("isDuple", "아이디 또는 닉네임이 중복되었습니다");
+			return ResponseEntity.ok(resultMap);
+		}
+		
 		int resultCnt = loginUserService.insertData(paramMap);
 		UserDetails userDetails= null;
 		String token = null;
@@ -103,6 +111,20 @@ public class LoginController {
 		JSONObject obj = new JSONObject(data);
 		HashMap<Object, Object> user = loginUserService.selectData(obj.getString("id"));
 		resultMap.put("id", obj.getString("id"));
+		if(user != null) {
+			resultMap.put("available", false);
+		}else {
+			resultMap.put("available", true);
+		}
+		
+		return resultMap;
+	}
+	@PostMapping("/api/auth/nicknameDupleCheck")
+	public HashMap<Object, Object> nicknameDupleCheck(@RequestBody String data) {
+		HashMap<Object, Object> resultMap = new HashMap<Object, Object>();
+		JSONObject obj = new JSONObject(data);
+		HashMap<Object, Object> user = loginUserService.selectDataByNickname(obj.getString("nickname"));
+		resultMap.put("nickname", obj.getString("nickname"));
 		if(user != null) {
 			resultMap.put("available", false);
 		}else {

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdjhaha.vocab.vocab.mapper.VocabAttentionMapper">
+	<!-- 
+CREATE TABLE `vocab_attention` (
+  `vocab_id` bigint(20) NOT NULL,
+  `vocab` varchar(100) DEFAULT NULL,
+  `mean` varchar(100) DEFAULT NULL,
+  `wrong_count` int(11) DEFAULT NULL,
+  PRIMARY KEY (`vocab_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+	 -->
+	
+</mapper>  

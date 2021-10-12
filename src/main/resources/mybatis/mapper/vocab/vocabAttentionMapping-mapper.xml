@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdjhaha.vocab.vocab.mapper.VocabAttentionMappingMapper">
+	<!-- 
+CREATE TABLE `vocab_attention_mapping` (
+  `vocab_id` bigint(20) NOT NULL,
+  `vocab_question_result_id` bigint(20) NOT NULL,
+  `vocab_question_result_history_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`vocab_id`,`vocab_question_result_id`,`vocab_question_result_history_id`),
+  KEY `vocab_attention_mapping_vocab_id_IDX` (`vocab_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+	 -->
+	
+</mapper>  

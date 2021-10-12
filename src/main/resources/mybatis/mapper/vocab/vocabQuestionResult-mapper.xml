@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jdjhaha.vocab.vocab.mapper.VocabQuestionResultMapper">
-	
+	<!-- 
+CREATE TABLE `vocab_question_result` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `group_code` bigint(20) NOT NULL,
+  `group_name` varchar(100) NOT NULL,
+  `vocab_count` int(11) NOT NULL,
+  `answer_count` int(11) NOT NULL,
+  `wrong_answer_count` int(11) NOT NULL,
+  `complete_flag` varchar(1) NOT NULL,
+  `regist_datetime` datetime NOT NULL,
+  `update_datetime` datetime NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `study_time_seconds` int(11) NOT NULL,
+  `round` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=133 DEFAULT CHARSET=utf8;	
+	 -->
 	<select id="selectData" parameterType="hashMap"
 		resultType="hashMap">
 		SELECT 
@@ -68,7 +84,8 @@
 			regist_datetime, 
 			update_datetime, 
 			username,
-			study_time_seconds
+			study_time_seconds,
+			round
 		)
 	VALUES(
 			#{group_code}, 
@@ -80,7 +97,8 @@
 			now(), 
 			now(), 
 			#{username},
-			#{study_time_seconds}
+			#{study_time_seconds},
+			#{round}
 		)
 	</insert>
 	
@@ -98,7 +116,8 @@
 		regist_datetime,
 		update_datetime,
 		username,
-		study_time_seconds
+		study_time_seconds,
+		round
 	)
 	VALUES(
 		#{group_code},
@@ -110,7 +129,8 @@
 		now(),
 		now(),
 		#{username},
-		#{study_time_seconds}
+		#{study_time_seconds},
+		#{round}
 	)
 	</insert>
 	
