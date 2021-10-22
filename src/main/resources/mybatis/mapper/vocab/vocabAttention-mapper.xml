@@ -10,5 +10,42 @@ CREATE TABLE `vocab_attention` (
   PRIMARY KEY (`vocab_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 	 -->
+	<select id="selectData" parameterType="hashMap"
+		resultType="hashMap">
+		select
+			vocab_id,
+			vocab,
+			mean,
+			wrong_count
+		from
+			vocab_attention
+		where
+			1=1
+			<if test='vocab_id !=null and !vocab_id.equals("")'>
+			and vocab_id=#{vocab_id}
+			</if>
+	</select>
+	
+	<insert id="insertData" parameterType="hashMap" >
+		insert into vocab_attention (
+			vocab_id,
+			vocab,
+			mean,
+			wrong_count
+		)
+		values(
+			#{vocab_id},
+			#{vocab},
+			#{mean},
+			1
+		)
+	</insert>
+	<update id="updateData" parameterType="hashMap">
+		update vocab_attention
+		set
+			wrong_count = #{wrong_count}
+		where
+			vocab_id = #{vocab_id}
+	</update>
 	
 </mapper>  
