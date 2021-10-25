@@ -7,6 +7,7 @@ CREATE TABLE `vocab_attention` (
   `vocab` varchar(100) DEFAULT NULL,
   `mean` varchar(100) DEFAULT NULL,
   `wrong_count` int(11) DEFAULT NULL,
+  `username` varchar(100) NOT NULL,
   PRIMARY KEY (`vocab_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 	 -->
@@ -24,6 +25,7 @@ CREATE TABLE `vocab_attention` (
 			<if test='vocab_id !=null and !vocab_id.equals("")'>
 			and vocab_id=#{vocab_id}
 			</if>
+			and username=#{username}
 	</select>
 	
 	<insert id="insertData" parameterType="hashMap" >
@@ -31,13 +33,15 @@ CREATE TABLE `vocab_attention` (
 			vocab_id,
 			vocab,
 			mean,
-			wrong_count
+			wrong_count,
+			username
 		)
 		values(
 			#{vocab_id},
 			#{vocab},
 			#{mean},
-			1
+			1,
+			#{username}
 		)
 	</insert>
 	<update id="updateData" parameterType="hashMap">
@@ -46,6 +50,7 @@ CREATE TABLE `vocab_attention` (
 			wrong_count = #{wrong_count}
 		where
 			vocab_id = #{vocab_id}
+			and username=#{username}
 	</update>
 	
 </mapper>  

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.jdjhaha.vocab.vocab.mapper.VocabQuestionResultHistoryMapper;
 import com.jdjhaha.vocab.vocab.service.VocabQuestionResultHistoryService;
+import com.jdjhaha.vocab.vocab.vo.VocabQuestionResultHistoryVO;
 
 @Service
 public class VocabQuestionResultHistoryServiceImpl implements VocabQuestionResultHistoryService {
@@ -25,6 +26,11 @@ public class VocabQuestionResultHistoryServiceImpl implements VocabQuestionResul
 		return vocabQuestionResultHistoryMapper.insertData(paramMap);
 	}
 	
+	@Override
+	public int insertData2(VocabQuestionResultHistoryVO vocabQuestionResultHistoryVO) {
+		return vocabQuestionResultHistoryMapper.insertData2(vocabQuestionResultHistoryVO);
+	}
+
 	@Override
 	public int deleteData(HashMap<Object, Object> paramMap) {
 		return vocabQuestionResultHistoryMapper.deleteData(paramMap);

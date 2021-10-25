@@ -68,6 +68,43 @@
 		)
 	</insert>
 	
+	<insert id="insertData2"
+	parameterType="com.jdjhaha.vocab.vocab.vo.VocabQuestionResultHistoryVO"
+	useGeneratedKeys="true" keyProperty="id">
+	INSERT INTO vocab_question_result_history
+	(
+	vocab_question_result_id,
+	group_code,
+	question_type,
+	question_value,
+	vocab_id,
+	vocab,
+	mean,
+	answer_vocab_id,
+	answer_vocab,
+	answer_mean,
+	result_flag,
+	regist_datetime,
+	username
+	)
+	VALUES
+	(
+	#{vocab_question_result_id},
+	#{group_code},
+	#{question_type},
+	#{question_value},
+	#{vocab_id},
+	#{vocab},
+	#{mean},
+	#{answer_vocab_id},
+	#{answer_vocab},
+	#{answer_mean},
+	#{result_flag},
+	now(),
+	#{username}
+	)
+	</insert>
+	
 	<delete id="deleteData" parameterType="hashMap">
 		DELETE FROM vocab_question_result_history
 		WHERE

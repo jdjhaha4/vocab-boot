@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jdjhaha.vocab.vocab.service.VocabAttentionService;
 import com.jdjhaha.vocab.vocab.service.VocabQuestionResultHistoryService;
 import com.jdjhaha.vocab.vocab.service.VocabQuestionResultService;
+import com.jdjhaha.vocab.vocab.vo.VocabQuestionResultHistoryVO;
 import com.jdjhaha.vocab.vocab.vo.VocabQuestionResultVO;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,9 @@ public class VocabStudyMultipleController {
 	
 	@Autowired
 	private VocabQuestionResultHistoryService vocabQuestionResultHistoryService;
+	
+	@Autowired
+	private VocabAttentionService vocabAttentionService;
 	
 //	@GetMapping("/vocab/group/mapping/list")
 //	public List<HashMap<Object, Object>> getVocabList(@RequestParam(required=false) String groupCode, Principal principal) {
@@ -92,21 +97,34 @@ public class VocabStudyMultipleController {
 		log.info(data);
 		JSONObject obj = new JSONObject(data);
 		
-		HashMap<Object, Object> paramMap = new HashMap<>();
-		paramMap.put("vocab_question_result_id", obj.getBigInteger("vocab_question_result_id"));
-		paramMap.put("group_code", obj.getBigInteger("group_code"));
-		paramMap.put("question_type", obj.getString("question_type"));
-		paramMap.put("question_value", obj.getString("question_value"));
-		paramMap.put("vocab_id", obj.getBigInteger("vocab_id"));
-		paramMap.put("vocab", obj.getString("vocab"));
-		paramMap.put("mean", obj.getString("mean"));
-		paramMap.put("answer_vocab_id", obj.getBigInteger("answer_vocab_id"));
-		paramMap.put("answer_vocab", obj.getString("answer_vocab"));
-		paramMap.put("answer_mean", obj.getString("answer_mean"));
-		paramMap.put("result_flag", obj.getString("result_flag"));
-		paramMap.put("username", principal.getName());
+		VocabQuestionResultHistoryVO vqrhVO = VocabQuestionResultHistoryVO.builder()
+																		.vocab_question_result_id(obj.getBigInteger("vocab_question_result_id"))
+																		.group_code(obj.getBigInteger("group_code"))
+																		.question_type(obj.getString("question_type"))
+																		.question_value(obj.getString("question_value"))
+																		.vocab_id(obj.getBigInteger("vocab_id"))
+																		.vocab(obj.getString("vocab"))
+																		.mean(obj.getString("mean"))
+																		.answer_vocab_id(obj.getBigInteger("answer_vocab_id"))
+																		.answer_vocab(obj.getString("answer_vocab"))
+																		.answer_mean(obj.getString("answer_mean"))
+																		.result_flag(obj.getString("result_flag"))
+																		.username(principal.getName())
+																		.build();
+		vocabQuestionResultHistoryService.insertData2(vqrhVO);
 		
-		vocabQuestionResultHistoryService.insertData(paramMap);
+		if(obj.getString("result_flag") != null && !"T".equals(obj.getString("result_flag"))) {
+			HashMap<Object, Object> paramMap = new HashMap<Object, Object>();
+			
+			paramMap.put("vocab_id", vqrhVO.getVocab_id());
+			paramMap.put("vocab", vqrhVO.getVocab());
+			paramMap.put("mean", vqrhVO.getMean());
+			paramMap.put("vocab_question_result_id", vqrhVO.getVocab_question_result_id());
+			paramMap.put("vocab_question_result_history_id", vqrhVO.getId());
+			paramMap.put("username", principal.getName());
+			
+			vocabAttentionService.insertData(paramMap );
+		}
 		
 		return 0;
 	}

@@ -10,5 +10,16 @@ CREATE TABLE `vocab_attention_mapping` (
   KEY `vocab_attention_mapping_vocab_id_IDX` (`vocab_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 	 -->
-	
+	<insert id="insertData" parameterType="hashMap" >
+		insert into	vocab_attention_mapping (
+			vocab_id,
+			vocab_question_result_id,
+			vocab_question_result_history_id
+		)
+		values(
+			#{vocab_id},
+			#{vocab_question_result_id},
+			#{vocab_question_result_history_id}
+		)
+	</insert>
 </mapper>  
