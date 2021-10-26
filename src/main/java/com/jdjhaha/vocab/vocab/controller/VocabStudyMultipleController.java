@@ -66,6 +66,7 @@ public class VocabStudyMultipleController {
 															.username(principal.getName())
 															.study_time_seconds(obj.getInt("study_time_seconds"))
 															.round(round)
+															.question_type_code(obj.getString("question_type_code"))
 															.build();
 		vocabQuestionResultService.insertData(vqrVO);
 		resultMap.put("vocab_question_result_id", vqrVO.getId());

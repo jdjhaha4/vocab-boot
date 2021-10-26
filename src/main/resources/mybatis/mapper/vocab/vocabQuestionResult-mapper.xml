@@ -15,8 +15,9 @@ CREATE TABLE `vocab_question_result` (
   `username` varchar(100) NOT NULL,
   `study_time_seconds` int(11) NOT NULL,
   `round` int(11) DEFAULT NULL,
+  `question_type_code` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=133 DEFAULT CHARSET=utf8;	
+) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=utf8;
 	 -->
 	<select id="selectData" parameterType="hashMap"
 		resultType="hashMap">
@@ -31,7 +32,9 @@ CREATE TABLE `vocab_question_result` (
 			DATE_FORMAT(regist_datetime, '%Y-%m-%d %H:%i:%s') as regist_datetime,
 			DATE_FORMAT(update_datetime, '%Y-%m-%d %H:%i:%s') as update_datetime,
 			username,
-			study_time_seconds
+			study_time_seconds,
+			round,
+			question_type_code
 		FROM 
 			vocab_question_result
 		WHERE
@@ -85,7 +88,8 @@ CREATE TABLE `vocab_question_result` (
 			update_datetime, 
 			username,
 			study_time_seconds,
-			round
+			round,
+			question_type_code
 		)
 	VALUES(
 			#{group_code}, 
@@ -98,7 +102,8 @@ CREATE TABLE `vocab_question_result` (
 			now(), 
 			#{username},
 			#{study_time_seconds},
-			#{round}
+			#{round},
+			#{question_type_code}
 		)
 	</insert>
 	
@@ -117,7 +122,8 @@ CREATE TABLE `vocab_question_result` (
 		update_datetime,
 		username,
 		study_time_seconds,
-		round
+		round,
+		question_type_code
 	)
 	VALUES(
 		#{group_code},
@@ -130,7 +136,8 @@ CREATE TABLE `vocab_question_result` (
 		now(),
 		#{username},
 		#{study_time_seconds},
-		#{round}
+		#{round},
+		#{question_type_code}
 	)
 	</insert>
 	
