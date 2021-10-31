@@ -22,4 +22,27 @@ CREATE TABLE `vocab_attention_mapping` (
 			#{vocab_question_result_history_id}
 		)
 	</insert>
+	
+	<select id="selectData" parameterType="hashMap"
+		resultType="hashMap">
+		select
+			vqr.group_name,
+			vqr.round,
+			vqr.question_type_code,
+			vam.vocab_question_result_history_id,
+			vqrh.answer_vocab,
+			vqrh.answer_mean,
+			vqrh.result_flag
+		from
+			vocab_attention va,
+			vocab_attention_mapping vam,
+			vocab_question_result vqr,
+			vocab_question_result_history vqrh
+		where
+			va.vocab_id = vam.vocab_id
+			and vam.vocab_question_result_id = vqr.id
+			and vam.vocab_question_result_history_id = vqrh.id
+			and va.vocab_id = #{vocab_id}
+			and va.username = #{username}
+	</select>
 </mapper>  
