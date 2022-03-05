@@ -34,9 +34,9 @@ public class WebConfig implements WebMvcConfigurer{
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(requestResponseLoggingInterceptor)
-		.addPathPatterns("/**")
-		.excludePathPatterns("/css/*", "/img/*");
+//		registry.addInterceptor(requestResponseLoggingInterceptor)
+//		.addPathPatterns("/**")
+//		.excludePathPatterns("/css/*", "/img/*");
 	}
 	
 	@Bean

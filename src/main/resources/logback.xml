@@ -14,7 +14,7 @@
   <logger name="jdbc.resultsettable" level="OFF"/>
   <logger name="jdbc.connection" level="OFF"/>
   
-  <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="DEBUG"/>
+  <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="OFF"/>
   
   <root level="INFO">
     <appender-ref ref="STDOUT" />
