@@ -6,7 +6,7 @@ import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerF
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
-//@Component
+@Component
 public class ServerCustomization implements 
   WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> {
  
