@@ -71,7 +71,15 @@ public class VocabDictionaryServiceImpl implements VocabDictionaryService {
 			vocabDicParam.put("vocab", vocab);
 			vocabDicParam.put("vocab_dic_json", result);
 			vocabDicParam.put("username", username);
-			vocabDicMapper.insertData(vocabDicParam);
+			
+			HashMap<String, String> dicMap = new HashMap<>();
+			dicMap.put("vocab", vocab);
+			dicMap.put("username", username);
+			
+			HashMap<Object, Object> dicSelectData = selectData(dicMap);
+			if(dicSelectData == null) {
+				vocabDicMapper.insertData(vocabDicParam);
+			}
 		} catch (RestClientException e) {
 			e.printStackTrace();
 		} catch (MalformedURLException e) {

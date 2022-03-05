@@ -65,10 +65,8 @@ public class VocabController {
 			HashMap<String, String> dicMap = new HashMap<>();
 			dicMap.put("vocab", obj.getString("vocab"));
 			dicMap.put("username", principal.getName());
-			HashMap<Object, Object> dicSelectData = vocabDictionaryService.selectData(dicMap);
-			if(dicSelectData == null) {
-				vocabDictionaryService.requestData(dicMap);
-			}
+			
+			vocabDictionaryService.requestData(dicMap);
 			vocabVO.setVocab_dic(vocab);
 		}
 		
