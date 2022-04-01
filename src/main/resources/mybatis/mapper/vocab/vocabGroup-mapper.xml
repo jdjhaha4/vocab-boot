@@ -29,7 +29,7 @@
 					max(id) as id,
 					count(group_code) as study_count,
 					group_code,
-					update_datetime
+					max(update_datetime) as update_datetime
 				from
 					vocab_question_result
 				where

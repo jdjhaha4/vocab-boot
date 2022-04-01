@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdjhaha.vocab.main.mapper.MainMapper">
+	<select id="selectMyVocabDataList" parameterType="hashMap"
+		resultType="hashMap">
+		select 
+			distinct v.id, vqrh.vocab_id
+		from 
+			vocab v left outer join vocab_question_result_history vqrh 
+			on v.id=vqrh.vocab_id
+		where 
+			v.username =#{username}
+	</select>
+</mapper>  

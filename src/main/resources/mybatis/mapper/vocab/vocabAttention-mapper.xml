@@ -26,6 +26,7 @@ CREATE TABLE `vocab_attention` (
 			and vocab_id=#{vocab_id}
 			</if>
 			and username=#{username}
+		order by update_datetime desc, wrong_count desc
 	</select>
 	
 	<insert id="insertData" parameterType="hashMap" >
@@ -34,20 +35,25 @@ CREATE TABLE `vocab_attention` (
 			vocab,
 			mean,
 			wrong_count,
-			username
+			username,
+			regist_datetime, 
+			update_datetime
 		)
 		values(
 			#{vocab_id},
 			#{vocab},
 			#{mean},
 			1,
-			#{username}
+			#{username},
+			now(),
+			now()
 		)
 	</insert>
 	<update id="updateData" parameterType="hashMap">
 		update vocab_attention
 		set
-			wrong_count = #{wrong_count}
+			wrong_count = #{wrong_count},
+			update_datetime = now()
 		where
 			vocab_id = #{vocab_id}
 			and username=#{username}
