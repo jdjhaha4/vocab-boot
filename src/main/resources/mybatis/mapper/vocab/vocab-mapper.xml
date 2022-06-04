@@ -60,6 +60,9 @@
 	<insert id="insertData2" parameterType="com.jdjhaha.vocab.vocab.vo.VocabVO" useGeneratedKeys="true" keyProperty="id">
 		insert into vocab(voca_json, username, add_date, vocab_dic) values(#{voca_json},#{username}, DATE_FORMAT(NOW(),'%Y%m%d'),#{vocab_dic})
 	</insert>
+	<update id="updateData" parameterType="com.jdjhaha.vocab.vocab.vo.VocabVO">
+		update vocab set voca_json=#{voca_json} where id=#{id} and username=#{username}
+	</update>
 	
 	<delete id="deleteData" parameterType="hashMap">
     	delete

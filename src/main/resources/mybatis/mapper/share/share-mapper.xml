@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jdjhaha.vocab.share.mapper.ShareMapper">
+	<select id="selectMyGroupList" parameterType="hashMap"
+		resultType="hashMap">
+		select
+			vg.group_code,
+			vg.group_name,
+			ifnull(vgm.vocab_count, 0) as vocab_count,
+			u.nickname
+		from
+			voca_group vg
+		left outer join (
+			select
+				group_code,
+				count(group_code) as vocab_count,
+				username
+			from
+				vocab_group_mapping
+			group by
+				group_code,
+				username) vgm on
+			vgm.group_code = vg.group_code ,
+			users u
+		where
+			vg.username = #{username}
+			and vg.username = u.username
+			and release_boolean = true
+			and vgm.vocab_count >= 5
+	</select>
+	<select id="selectOthersGroupList" parameterType="hashMap"
+		resultType="hashMap">
+		select
+			vg.group_code,
+			vg.group_name,
+			ifnull(vgm.vocab_count, 0) as vocab_count,
+			u.nickname
+		from
+			voca_group vg
+		left outer join (
+			select
+				group_code,
+				count(group_code) as vocab_count,
+				username
+			from
+				vocab_group_mapping
+			group by
+				group_code,
+				username) vgm on
+			vgm.group_code = vg.group_code ,
+			users u
+		where
+			vg.username != #{username}
+			and vg.username = u.username
+			and release_boolean = true
+			and vgm.vocab_count >= 5
+	</select>
+	<select id="selectOthersGroupData" parameterType="hashMap" resultType="hashMap">
+		select vg.group_code
+		   ,vg.group_name 
+		   ,vg.release_boolean 
+		   ,vg.username
+		   ,count(vgm.group_code) as vocab_count
+		   ,u.nickname 
+		from voca_group vg, vocab_group_mapping vgm , users u
+		where 
+		    vg.group_code = vgm.group_code
+		    and vg.username = u.username
+			and vg.group_code=#{groupCode}
+			and vg.release_boolean =true
+	</select>
+	<select id="selectOthersVocabList" parameterType="hashMap" resultType="hashMap">
+		select v.id,
+			   v.voca_json,
+			   v.username,
+			   vd.vocab_dic_json
+		  from vocab v left outer join vocab_group_mapping vgm on v.id = vgm.vocab_id
+						left outer join vocab_dic vd on v.vocab_dic = vd.vocab
+			   ,voca_group vg
+		  where vg.group_code=#{groupCode}
+		  		and vgm.group_code = vg.group_code
+		  		and vg.release_boolean =true
+	</select>
+</mapper>  

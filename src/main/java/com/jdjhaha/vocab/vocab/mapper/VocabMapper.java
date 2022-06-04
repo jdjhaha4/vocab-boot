@@ -14,6 +14,7 @@ public interface VocabMapper {
 	List<HashMap<Object, Object>> selectData(HashMap<Object, Object> paramMap);
 	
 	int insertData2(VocabVO vocab);
+	int updateData(VocabVO vocab);
 	int insertData(HashMap<Object, Object> paramMap);
 	int deleteData(HashMap<Object, Object> map);
 }

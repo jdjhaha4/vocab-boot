@@ -35,14 +35,29 @@ public class VocabGroupServiceImpl implements VocabGroupService {
 	}
 
 	@Override
+	public List<HashMap<Object, Object>> selectOthersReleaseData(HashMap<Object, Object> paramMap) {
+		return vocabGroupMapper.selectOthersReleaseData(paramMap);
+	}
+
+	@Override
 	public int insertData(HashMap<Object, Object> paramMap) {
 		return vocabGroupMapper.insertData(paramMap);
+	}
+
+	@Override
+	public int updateData(HashMap<Object, Object> paramMap) {
+		return vocabGroupMapper.updateData(paramMap);
 	}
 
 	@Override
 	public int deleteData(HashMap<Object, Object> paramMap) {
 		vocabGroupMappingMapper.deleteDataByGroupCode(paramMap);
 		return vocabGroupMapper.deleteData(paramMap);
+	}
+
+	@Override
+	public HashMap<Object, Object> selectDataForResult(HashMap<Object, Object> paramMap) {
+		return vocabGroupMapper.selectDataForResult(paramMap);
 	}
 
 }

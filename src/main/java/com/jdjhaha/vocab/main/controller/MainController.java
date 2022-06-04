@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jdjhaha.vocab.main.service.MainService;
+import com.jdjhaha.vocab.vocab.service.VocabGroupService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,16 +20,19 @@ public class MainController {
 	@Autowired
 	private MainService mainService;
 	
+	@Autowired
+	private VocabGroupService vocabGroupService;
+	
 	@GetMapping("/main/data")
 	public HashMap<Object, Object> getMainData( Principal principal) {
 		log.info("main data");
 		HashMap<Object, Object> paramMap = new HashMap<Object, Object>();
 		paramMap.put("username", principal.getName());
 		
-		List<HashMap<Object, Object>> myVocabDataList = mainService.selectMyVocabDataList(paramMap);
-		
 		HashMap<Object, Object> resultMap = new HashMap<Object, Object>();
-		resultMap.put("myVocabDataList", myVocabDataList);
+		List<HashMap<Object, Object>> othersGroupList = vocabGroupService.selectOthersReleaseData(paramMap);
+		
+		resultMap.put("othersGroupList", othersGroupList);
 		
 		return resultMap;
 	}

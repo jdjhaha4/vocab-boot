@@ -50,29 +50,41 @@ CREATE TABLE `vocab_question_result` (
 	
 	<select id="selectGroupByData" parameterType="hashMap"
 		resultType="hashMap">
-		select
-			vqr.group_code,
-			vqr.group_name,
-			vqr.vocab_count,
-			max_vqr.study_count,
-			DATE_FORMAT(vqr.update_datetime, '%Y-%m-%d %H:%i:%s') as update_datetime
-		from
-			vocab_question_result vqr,
-			(
-			select
-				max(id) as id,
-				count(group_code) as study_count
+		select /* vocabQuestionResult-mapper.xml | selectGroupByData*/
+				A.group_code,
+			   case when A.username != #{username} then concat(A.group_name,' by ',(select nickname from users where username=A.username))
+				else A.group_name
+				end as group_name,
+			   A.vocab_count,
+			   A.study_count,
+			   A.update_datetime
+		from 
+		(
+			select 
+				vqr.group_code
+				,vqr.group_name
+				,vqr.vocab_count
+				,max_vqr.study_count
+				,DATE_FORMAT(vqr.update_datetime, '%Y-%m-%d %H:%i:%s') as update_datetime
+				,(select b.username from voca_group a, users b where a.group_code=vqr.group_code and a.username=b.username) as username
 			from
-				vocab_question_result
+				vocab_question_result vqr,
+				(
+				select
+					max(id) as id,
+					count(group_code) as study_count
+				from
+					vocab_question_result
+				where
+					username = #{username}
+				group by
+					group_code
+				order by
+					max(id) desc ) max_vqr
 			where
-				username = #{username}
-			group by
-				group_code
-			order by
-				max(id) desc ) max_vqr
-		where
-			vqr.id = max_vqr.id
-		order by vqr.id desc
+				vqr.id = max_vqr.id
+			order by vqr.id desc
+		) A
 	</select>
 	
 	<insert id="insertData" parameterType="hashMap">

@@ -29,6 +29,11 @@ public class VocabServiceImpl implements VocabService {
 	public int insertData(VocabVO vocab) {
 		return vocabMapper.insertData2(vocab);
 	}
+	
+	@Override
+	public int updateData(VocabVO vocab) {
+		return vocabMapper.updateData(vocab);
+	}
 
 	@Override
 	public int insertData(HashMap<Object, Object> paramMap) {

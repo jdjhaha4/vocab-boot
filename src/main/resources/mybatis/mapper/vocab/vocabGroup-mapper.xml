@@ -4,9 +4,10 @@
 
 	<select id="selectData" parameterType="hashMap"
 		resultType="hashMap">
-		select
+		select /*vocabGroup-mapper.xml | selectData*/
 			vg.group_code,
 			vg.group_name,
+			vg.release_boolean,
 			ifnull(vgm.vocab_count,0) as vocab_count,
 			vg.username,
 			vqr.study_count,
@@ -33,7 +34,7 @@
 				from
 					vocab_question_result
 				where
-					username = 'jdjhaha'
+					username = #{username}
 					<if test='groupCode != null'>
 						and group_code = #{groupCode}
 					</if>
@@ -51,9 +52,94 @@
 			vg.group_code desc
 	</select>
 	
+	<select id="selectDataForResult" parameterType="hashMap"
+		resultType="hashMap">
+		select A.group_code
+			,case when A.username != #{username} then concat(A.group_name,' by ',(select nickname from users where username=A.username))
+			  else A.group_name
+			  end as group_name
+			,A.release_boolean
+			,A.vocab_count
+			,A.username
+			,A.study_count
+			,A.update_datetime
+		from (
+			select /*vocabGroup-mapper.xml | selectDataForResult*/
+				vg.group_code,
+				vg.group_name,
+				vg.release_boolean,
+				ifnull(vgm.vocab_count,0) as vocab_count,
+				vg.username,
+				vqr.study_count,
+				DATE_FORMAT(vqr.update_datetime, '%Y-%m-%d %H:%i:%s') as update_datetime
+			from
+				voca_group vg
+			left outer join (
+				select
+					group_code,
+					count(group_code) as vocab_count,
+					username
+				from
+					vocab_group_mapping
+				group by
+					group_code,
+					username) vgm on
+				vgm.group_code = vg.group_code
+				left outer join (
+					select
+						max(id) as id,
+						count(group_code) as study_count,
+						group_code,
+						max(update_datetime) as update_datetime
+					from
+						vocab_question_result
+					where
+						group_code = #{groupCode}
+					group by
+						group_code
+					order by
+						max(id) desc ) vqr on
+				vg.group_code = vqr.group_code
+			where
+					vg.group_code = #{groupCode}
+			order by
+				vg.group_code desc
+		) A
+	</select>
+	
+	<select id="selectOthersReleaseData" parameterType="hashMap" resultType="hashMap">
+		select
+			vg.group_code,
+			vg.group_name,
+			ifnull(vgm.vocab_count, 0) as vocab_count,
+			u.nickname
+		from
+			voca_group vg
+		left outer join (
+			select
+				group_code,
+				count(group_code) as vocab_count,
+				username
+			from
+				vocab_group_mapping
+			group by
+				group_code,
+				username) vgm on
+			vgm.group_code = vg.group_code ,
+			users u
+		where
+			vg.username != #{username}
+			and vg.username = u.username
+			and release_boolean = true
+			and vgm.vocab_count >= 5
+	</select>
+	
 	<insert id="insertData" parameterType="hashMap">
 		insert into voca_group(group_name, username) values(#{group_name},#{username})
 	</insert>
+	<update id="updateData" parameterType="hashMap">
+		update voca_group set group_name=#{group_name}, release_boolean=#{release_boolean} where group_code=#{group_code} and username=#{username}
+	</update>
 	
 	<delete id="deleteData" parameterType="hashMap">
     	delete

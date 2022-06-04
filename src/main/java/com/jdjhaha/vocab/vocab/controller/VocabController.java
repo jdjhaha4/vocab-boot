@@ -83,6 +83,25 @@ public class VocabController {
 		return resultCnt;
 	}
 	
+	@PostMapping("/vocab/update")
+	public VocabVO updateVocaData(@RequestBody String data, Principal principal){
+		JSONObject obj = new JSONObject(data);
+		int vocabId = obj.getInt("id");
+		obj.remove("id");
+		
+		VocabVO vocabVO = new VocabVO();
+		vocabVO.setId(vocabId);
+		vocabVO.setVoca_json(obj.toString());
+		vocabVO.setUsername(principal.getName());
+		
+		int resultCnt = vocabService.updateData(vocabVO);
+		if(resultCnt >0) {
+			return vocabVO;
+		}else {
+			return null;
+		}
+	}
+	
 	@PostMapping("/vocab/delete")
 	public BigInteger wordDelete(@RequestBody String data, Principal principal){
 		JSONObject obj = new JSONObject(data);

@@ -10,5 +10,6 @@ public interface VocabService {
 
 	int insertData(HashMap<Object, Object> paramMap);
 	int insertData(VocabVO vocab);
+	int updateData(VocabVO vocab);
 	int deleteData(HashMap<Object, Object> paramMap);
 }

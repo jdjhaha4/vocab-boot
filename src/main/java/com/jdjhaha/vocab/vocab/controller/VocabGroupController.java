@@ -44,9 +44,18 @@ public class VocabGroupController {
 		return resultList;
 	}
 	
+	@GetMapping("/vocab/group/result/{groupCode}")
+	public HashMap<Object, Object> getVocabGroupForResult( Principal principal, @PathVariable String groupCode) {
+		HashMap<Object, Object> paramMap = new HashMap<Object, Object>();
+		paramMap.put("username", principal.getName());
+		paramMap.put("groupCode", groupCode);
+		HashMap<Object, Object> resultList =vocabGroupService.selectDataForResult(paramMap);
+		
+		return resultList;
+	}
+	
 	@PostMapping("/vocab/group/insert")
 	public int saveVocaData(@RequestBody String data, Principal principal){
-		log.info(data);
 		JSONObject obj = new JSONObject(data);
 		
 		HashMap<Object, Object> paramMap = new HashMap<>();
@@ -55,6 +64,21 @@ public class VocabGroupController {
 		int resultCnt = vocabGroupService.insertData(paramMap);
 		
 		return resultCnt;
+	}
+	@PostMapping("/vocab/group/update")
+	public HashMap<Object, Object> updateVocaGroupData(@RequestBody String data, Principal principal){
+//		log.info(data);
+		JSONObject obj = new JSONObject(data);
+		int groupCode = obj.getInt("group_code");
+		
+		HashMap<Object, Object> paramMap = new HashMap<>();
+		paramMap.put("group_code", groupCode);
+		paramMap.put("group_name", obj.getString("group_name"));
+		paramMap.put("release_boolean", obj.getBoolean("release_boolean"));
+		paramMap.put("username", principal.getName());
+		int resultCnt = vocabGroupService.updateData(paramMap);
+		
+		return paramMap;
 	}
 	
 	@PostMapping("/vocab/group/delete")
