@@ -13,11 +13,13 @@ CREATE TABLE `vocab_attention_mapping` (
 	<insert id="insertData" parameterType="hashMap" >
 		insert into	vocab_attention_mapping (
 			vocab_id,
+			username,
 			vocab_question_result_id,
 			vocab_question_result_history_id
 		)
 		values(
 			#{vocab_id},
+			#{username},
 			#{vocab_question_result_id},
 			#{vocab_question_result_history_id}
 		)
@@ -39,10 +41,11 @@ CREATE TABLE `vocab_attention_mapping` (
 			vocab_question_result vqr,
 			vocab_question_result_history vqrh
 		where
-			va.vocab_id = vam.vocab_id
+			va.vocab_id = #{vocab_id}
+			and va.username = #{username}
+			and va.vocab_id = vam.vocab_id
+			and vam.username =#{username}
 			and vam.vocab_question_result_id = vqr.id
 			and vam.vocab_question_result_history_id = vqrh.id
-			and va.vocab_id = #{vocab_id}
-			and va.username = #{username}
 	</select>
 </mapper>  
