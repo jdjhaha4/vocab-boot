@@ -61,12 +61,12 @@ public class VocabController {
 		vocabVO.setUsername(principal.getName());
 		
 		String vocab = obj.getString("vocab");
-		if(!"".equals(vocab) && !vocab.contains(" ")) {
+		if(vocab != null && !"".equals(vocab.trim())) {
 			HashMap<String, String> dicMap = new HashMap<>();
 			dicMap.put("vocab", obj.getString("vocab"));
 			dicMap.put("username", principal.getName());
 			
-			vocabDictionaryService.requestData(dicMap);
+			vocabDictionaryService.requestDataMacMillan(dicMap);
 			vocabVO.setVocab_dic(vocab);
 		}
 		

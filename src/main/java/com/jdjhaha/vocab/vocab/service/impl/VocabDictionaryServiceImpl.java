@@ -9,6 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -42,7 +47,7 @@ public class VocabDictionaryServiceImpl implements VocabDictionaryService {
 	public List<HashMap<Object, Object>> requestData(HashMap<String, String> paramMap) {
 		String vocab = paramMap.get("vocab");
 		String username = paramMap.get("username");
-		log.info(vocab);
+		//log.info(vocab);
 		
 		RestTemplate restTemplate = new RestTemplate();
 
@@ -87,6 +92,73 @@ public class VocabDictionaryServiceImpl implements VocabDictionaryService {
 		}
 
 		return null;
+	}
+
+	@Override
+	public HashMap<String, String> requestDataMacMillan(HashMap<String, String> paramMap) {
+		
+		String vocab = paramMap.get("vocab");
+		String username = paramMap.get("username");
+		
+		HashMap<String, String> resultMap = new HashMap<String, String>();
+		String audio = "";
+		String text = vocab;
+		
+		//String url = "https://www.macmillandictionary.com/dictionary/american/"+vocab;
+		String url = "https://www.macmillandictionary.com/search/american/direct/?q="+vocab.replace(' ', '+');
+		Connection conn = Jsoup.connect(url);
+		
+		Document document = null;
+		try {
+			document = conn.get();
+			//data-src-mp3  [attr]    
+			//<span class="PRON"><span class="SEPPRON-before"> /</span>ˌʌnəˈveɪləb(ə)l<span class="SEPPRON-after">/</span></span>
+			Element element = document.selectFirst("[data-src-mp3]");
+			audio=element.attr("data-src-mp3");
+			
+			Element before = document.selectFirst(".SEPPRON-before");
+			Element after = document.selectFirst(".SEPPRON-after");
+			if(before != null && after != null) {
+				before.remove();
+				after.remove();
+			}
+			Element pron = document.selectFirst(".PRON");
+			if(pron != null) {
+				text = "/"+document.selectFirst(".PRON").html()+"/";
+			}
+			
+			JSONArray dicArr = new JSONArray();
+			JSONObject wordObj = new JSONObject();
+			wordObj.put("word", vocab);
+			JSONArray phoneticsArr = new JSONArray();
+			JSONObject phoneticObj = new JSONObject();
+			phoneticObj.put("text", text);
+			phoneticObj.put("audio", audio);
+			phoneticsArr.put(phoneticObj);
+			wordObj.put("phonetics", phoneticsArr);
+			dicArr.put(wordObj);
+			
+			HashMap<Object, Object> vocabDicParam = new HashMap<Object, Object>();
+			vocabDicParam.put("vocab", vocab);
+			vocabDicParam.put("vocab_dic_json", dicArr.toString());
+			vocabDicParam.put("username", username);
+			
+			HashMap<String, String> dicMap = new HashMap<>();
+			dicMap.put("vocab", vocab);
+			dicMap.put("username", username);
+			
+			HashMap<Object, Object> dicSelectData = selectData(dicMap);
+			if(dicSelectData == null) {
+				vocabDicMapper.insertData(vocabDicParam);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		resultMap.put("audio", audio);
+		resultMap.put("text", text);
+		
+		return resultMap;
 	}
 
 }
