@@ -34,7 +34,8 @@ CREATE TABLE `vocab_attention_mapping` (
 			vam.vocab_question_result_history_id,
 			vqrh.answer_vocab,
 			vqrh.answer_mean,
-			vqrh.result_flag
+			vqrh.result_flag,
+			DATE_FORMAT(vqrh.regist_datetime , '%Y-%m-%d %H:%i:%s') as regist_datetime
 		from
 			vocab_attention va,
 			vocab_attention_mapping vam,
